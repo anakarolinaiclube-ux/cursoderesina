@@ -214,9 +214,9 @@
     border: 1.5px solid rgba(224,21,122,0.2);
   }
 
-  /* ── SECTION ── */
+  /* ── SECTION BASE ── */
   .section { padding: 60px 24px; }
-  .container { max-width: 680px; margin: 0 auto; }
+  .container { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
   .sec-label {
     text-align: center;
     font-size: 13px;
@@ -266,47 +266,111 @@
   .pain-text { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.5; }
   .pain-text span { color: var(--pink); }
 
-  /* ── WHAT YOU GET ── */
-  .what { background: var(--pink-bg); }
-  .module-list {
+  /* ── WHAT YOU GET (GLASSMORPHISM + CAROUSEL) ── */
+  .what {
+    background: var(--pink-bg);
+    position: relative;
+    padding: 60px 0; /* padding horizontal zero para o carrossel atravessar a tela */
+    overflow: hidden;
+  }
+  
+  /* Orbs Decorativas para dar contraste ao Glassmorphism */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: 0;
+    opacity: 0.5;
+  }
+  .orb-1 { top: 10%; left: -10%; width: 350px; height: 350px; background: var(--pink-light); }
+  .orb-2 { bottom: 10%; right: -10%; width: 350px; height: 350px; background: var(--fuchsia); opacity: 0.35; }
+  .orb-3 { top: 40%; left: 40%; width: 250px; height: 250px; background: var(--pink); opacity: 0.25; }
+
+  /* Conteúdos centralizados na seção What */
+  .what .container { padding: 0 24px; }
+
+  /* Marquee/Carrossel Wrapper */
+  .marquee-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100vw;
+    max-width: 100%;
+    overflow: hidden;
+    margin-bottom: 40px;
+    display: flex;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 20px;
+    padding: 20px 20px 30px 20px; /* padding para a sombra (box-shadow) não cortar */
+    width: max-content;
+    animation: scroll-marquee 40s linear infinite;
+  }
+  /* Pausa a animação ao passar o mouse */
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+  
+  @keyframes scroll-marquee {
+    0% { transform: translateX(0); }
+    /* Desloca 50% exatos do track + compensação do gap para criar o loop infinito perfeito */
+    100% { transform: translateX(calc(-50% - 10px)); } 
+  }
+
+  /* Glass Card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 24px;
+    min-width: 300px;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
+    box-shadow: 0 8px 32px 0 rgba(224, 21, 122, 0.15);
+    transition: transform 0.3s ease, border-color 0.3s ease;
   }
-  .module-item {
-    background: var(--white);
-    border: 1.5px solid var(--pink-pale);
-    border-radius: 14px;
-    padding: 18px 20px;
+  .glass-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--pink);
+  }
+  .glass-header {
     display: flex;
     align-items: center;
-    gap: 16px;
-    transition: border-color 0.2s, transform 0.2s;
+    gap: 14px;
   }
-  .module-item:hover { border-color: var(--pink); transform: translateX(4px); }
-  .module-num {
-    width: 40px; height: 40px;
+  .glass-num {
+    width: 48px; height: 48px;
     background: linear-gradient(135deg, var(--pink-light), var(--pink));
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 900;
     color: var(--white);
     flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(224, 21, 122, 0.3);
   }
-  .module-info h3 { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
-  .module-info p { font-size: 13px; color: var(--text-soft); font-weight: 700; line-height: 1.4; }
+  .glass-title {
+    font-size: 16px; font-weight: 800; color: var(--text); line-height: 1.2;
+  }
+  .glass-desc {
+    font-size: 14px; color: var(--text-soft); font-weight: 700; line-height: 1.5;
+  }
 
   /* BONUS */
   .bonus-box {
     background: linear-gradient(135deg, var(--pink), var(--fuchsia));
     border-radius: 20px;
     padding: 28px 24px;
-    margin-top: 32px;
     text-align: center;
     color: var(--white);
+    position: relative;
+    z-index: 2;
   }
   .bonus-box h3 {
     font-family: 'Baloo 2', cursive;
@@ -633,77 +697,146 @@
   </div>
 </section>
 
-<!-- WHAT YOU GET -->
+<!-- WHAT YOU GET (GLASSMORPHISM + INFINITE MARQUEE) -->
 <section class="section what">
+  <!-- Orbs para fundo do efeito Glassmorphism -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
   <div class="container">
     <div class="sec-label">Conteúdo completo</div>
     <h2 class="sec-title">Tudo que você vai <em>receber</em></h2>
-    <p class="sec-sub">Ebook + app de apoio entregues no seu e-mail na hora</p>
-    <div class="module-list">
-      <div class="module-item">
-        <div class="module-num">1</div>
-        <div class="module-info">
-          <h3>Materiais e segurança</h3>
-          <p>Quais resinas comprar, onde achar mais barato, EPI essencial e como montar seu cantinho</p>
+    <p class="sec-sub">Ebooks + Apps de apoio entregues no seu e-mail na hora</p>
+  </div>
+
+  <div class="marquee-wrapper">
+    <div class="marquee-track">
+      <!-- BLOCO 1 DOS CARDS -->
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">1</div>
+          <div class="glass-title">Materiais e segurança</div>
         </div>
+        <div class="glass-desc">Quais resinas comprar, onde achar mais barato, EPI essencial e como montar seu cantinho</div>
       </div>
-      <div class="module-item">
-        <div class="module-num">2</div>
-        <div class="module-info">
-          <h3>Moldes e formas</h3>
-          <p>Como usar moldes de silicone, acetato e até fazer o seu próprio em casa</p>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">2</div>
+          <div class="glass-title">Moldes e formas</div>
         </div>
+        <div class="glass-desc">Como usar moldes de silicone, acetato e até fazer o seu próprio em casa</div>
       </div>
-      <div class="module-item">
-        <div class="module-num">3</div>
-        <div class="module-info">
-          <h3>Pigmentos e efeitos lindos</h3>
-          <p>Pó de mica, glitter, álcool ink, efeito geode, mármore e oceano</p>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">3</div>
+          <div class="glass-title">Pigmentos e efeitos</div>
         </div>
+        <div class="glass-desc">Pó de mica, glitter, álcool ink, efeito geode, mármore e oceano</div>
       </div>
-      <div class="module-item">
-        <div class="module-num">4</div>
-        <div class="module-info">
-          <h3>Inclusões: flores, fotos e mais</h3>
-          <p>Como incluir elementos dentro da resina sem manchar nem perder transparência</p>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">4</div>
+          <div class="glass-title">Inclusões e Flores</div>
         </div>
+        <div class="glass-desc">Como incluir elementos dentro da resina sem manchar nem perder transparência</div>
       </div>
-      <div class="module-item">
-        <div class="module-num">5</div>
-        <div class="module-info">
-          <h3>Acabamento profissional</h3>
-          <p>Como lixar, polir e deixar sua peça com brilho de vitrine</p>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">5</div>
+          <div class="glass-title">Acabamento</div>
         </div>
+        <div class="glass-desc">Como lixar, polir e deixar sua peça com brilho de vitrine profissional</div>
       </div>
-      <div class="module-item">
-        <div class="module-num">6</div>
-        <div class="module-info">
-          <h3>Peças que mais vendem</h3>
-          <p>Chaveiros, quadros, bijuterias, peças de natal — passo a passo de cada uma</p>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">6</div>
+          <div class="glass-title">Peças que mais vendem</div>
         </div>
+        <div class="glass-desc">Chaveiros, quadros, bijuterias, peças de natal — passo a passo de cada uma</div>
       </div>
-      <div class="module-item">
-        <div class="module-num">7</div>
-        <div class="module-info">
-          <h3>Quanto cobrar — sem chute</h3>
-          <p>Fórmula simples de precificação + calculadora no app pra você não trabalhar no prejuízo</p>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">7</div>
+          <div class="glass-title">Quanto cobrar</div>
         </div>
+        <div class="glass-desc">Fórmula simples de precificação + calculadora no app pra não trabalhar no prejuízo</div>
       </div>
-      <div class="module-item">
-        <div class="module-num">8</div>
-        <div class="module-info">
-          <h3>Como vender pelo celular</h3>
-          <p>Fotos bonitas com celular, descrição que converte no Elo7, Shopee e Instagram</p>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">8</div>
+          <div class="glass-title">Como vender</div>
         </div>
+        <div class="glass-desc">Fotos bonitas com celular, descrição que converte na Elo7, Shopee e Instagram</div>
+      </div>
+      
+      <!-- BLOCO DUPLICADO (Exatamente igual ao de cima para o Loop Infinito perfeito) -->
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">1</div>
+          <div class="glass-title">Materiais e segurança</div>
+        </div>
+        <div class="glass-desc">Quais resinas comprar, onde achar mais barato, EPI essencial e como montar seu cantinho</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">2</div>
+          <div class="glass-title">Moldes e formas</div>
+        </div>
+        <div class="glass-desc">Como usar moldes de silicone, acetato e até fazer o seu próprio em casa</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">3</div>
+          <div class="glass-title">Pigmentos e efeitos</div>
+        </div>
+        <div class="glass-desc">Pó de mica, glitter, álcool ink, efeito geode, mármore e oceano</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">4</div>
+          <div class="glass-title">Inclusões e Flores</div>
+        </div>
+        <div class="glass-desc">Como incluir elementos dentro da resina sem manchar nem perder transparência</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">5</div>
+          <div class="glass-title">Acabamento</div>
+        </div>
+        <div class="glass-desc">Como lixar, polir e deixar sua peça com brilho de vitrine profissional</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">6</div>
+          <div class="glass-title">Peças que mais vendem</div>
+        </div>
+        <div class="glass-desc">Chaveiros, quadros, bijuterias, peças de natal — passo a passo de cada uma</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">7</div>
+          <div class="glass-title">Quanto cobrar</div>
+        </div>
+        <div class="glass-desc">Fórmula simples de precificação + calculadora no app pra não trabalhar no prejuízo</div>
+      </div>
+      <div class="glass-card">
+        <div class="glass-header">
+          <div class="glass-num">8</div>
+          <div class="glass-title">Como vender</div>
+        </div>
+        <div class="glass-desc">Fotos bonitas com celular, descrição que converte na Elo7, Shopee e Instagram</div>
       </div>
     </div>
+  </div>
+
+  <div class="container">
     <div class="bonus-box">
-      <h3>🎁 Bônus exclusivo incluso!</h3>
-      <p>Junto com o ebook você recebe acesso ao app de apoio com as ferramentas mais pedidas:</p>
+      <h3>🎁 Bônus exclusivos inclusos!</h3>
+      <p>Junto com o ebook você recebe acesso aos apps de apoio com as ferramentas mais pedidas:</p>
       <div class="bonus-items">
         <div class="bonus-tag">⏱️ Timer de cura</div>
-        <div class="bonus-tag">🧮 Calculadora de custo</div>
-        <div class="bonus-tag">🏷️ Gerador de ficha técnica</div>
+        <div class="bonus-tag">🧮 Calculadora de custos</div>
       </div>
     </div>
   </div>
@@ -860,6 +993,18 @@
   <a href="https://www.ggcheckout.com/checkout/v4/iUpOrLdMBKFcBMhvV17R" class="sticky-btn">GARANTIR AGORA →</a>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-function toggleFaq(btn) {
-  cons
+<script>
+  function toggleFaq(btn) {
+    // Fecha outras abertas
+    const allItems = document.querySelectorAll('.faq-item');
+    const item = btn.closest('.faq-item');
+    
+    allItems.forEach(i => {
+      if(i !== item) i.classList.remove('open');
+    });
+
+    item.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
